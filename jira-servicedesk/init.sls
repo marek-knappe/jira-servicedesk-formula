@@ -103,18 +103,6 @@ fix-jira-filesystem-permissions:
     - watch:
       - archive: unpack-jira-tarball
 
-#jira-init-script:
-#  file.managed:
-#    - name: '/etc/init.d/jira'
-#    - source: salt://jira-servicedesk/templates/jira.init.tmpl
-#    - user: root
-#    - group: root
-#    - mode: 0755
-#    - template: jinja
-#    - context:
-#      jira: {{ jira|json }}
-
-
 /usr/lib/systemd/system:
   file.directory:
     - user: root
@@ -158,10 +146,6 @@ jira-properties-file:
     - context:
       jira: {{ jira|json }}
 
-#update-rc.d jira defaults && update-rc.d jira enable:
-#  cmd.run
-
-
 jira-service:
   service.running:
     - name: jira
@@ -184,10 +168,6 @@ jira-stop:
     - name: service.stop
     - m_name: jira  
 
-
-
-
-#[INFO    ] Executing command ['systemd-run', '--scope', 'systemctl', 'restart', 'jira.service'] in directory '/root'
 
 
 
