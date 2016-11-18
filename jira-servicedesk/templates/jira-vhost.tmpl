@@ -1,0 +1,17 @@
+<VirtualHost *:80>
+    ServerName {{ jira.jira_hostname }}
+ 
+    ProxyRequests Off
+    <Proxy *>
+        Order deny,allow
+        Allow from all
+    </Proxy>
+ 
+    ProxyPass / http://localhost:8080/
+    ProxyPassReverse / http://localhost:8080/
+    <Location />
+        Order allow,deny
+        Allow from all
+    </Location>
+</VirtualHost>
+

@@ -1,0 +1,15 @@
+[Unit]
+Description=JIRA Service
+After=network.target iptables.service firewalld.service firewalld.service httpd.service
+ 
+[Service]
+Type=forking
+User=jira
+Environment=JIRA_HOME={{ jira.home }}
+Environment=JAVA_HOME=/usr/lib/java
+ExecStart={{ jira.prefix }}/jira/bin/start-jira.sh
+ExecStop={{ jira.prefix }}/jira/bin/stop-jira.sh
+ExecReload={{ jira.prefix }}/jira/bin/stop-jira.sh | sleep 60 | {{ jira.prefix }}/jira/bin/start-jira.sh
+ 
+[Install]
+WantedBy=multi-user.target

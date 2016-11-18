@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<jira-database-config>
+  <name>defaultDS</name>
+  <delegator-name>default</delegator-name>
+  <database-type>{{ jira.db_type }}</database-type>
+  <schema-name>{{ jira.db_name }}</schema-name>
+  <jdbc-datasource>
+    <url>jdbc:{{ jira.db_type_name }}://{{ jira.db_server }}:{{ jira.db_port }}/{{ jira.db_name }}</url>
+    <driver-class>{{ jira.db_driver }}</driver-class>
+    <username>{{ jira.db_username }}</username>
+    <password>{{ jira.db_password }}</password>
+    <pool-min-size>20</pool-min-size>
+    <pool-max-size>20</pool-max-size>
+    <pool-max-wait>30000</pool-max-wait>
+    <pool-max-idle>20</pool-max-idle>
+    <pool-remove-abandoned>true</pool-remove-abandoned>
+    <pool-remove-abandoned-timeout>300</pool-remove-abandoned-timeout>
+  </jdbc-datasource>
+</jira-database-config>
+
+

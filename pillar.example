@@ -1,0 +1,65 @@
+jira:
+
+  version: 3.2.1
+  db_type: 'mysql'
+  db_type_name: 'mysql'
+  db_driver: 'com.mysql.jdbc.Driver'
+  db_server: 'localhost'
+  db_port: '3306'
+  db_username: 'root'
+  db_password: 'some-password'
+
+  prefix: '/data'
+  jira_home: '/data/jira-home'
+  jira_hostname: 'jira.somedomain.com'
+  jvm_Xms: 1024m
+  jvm_Xmx: 1024m
+
+mysql: 
+  server:
+    root_user: 'root'
+    root_password: 'some-password'
+    datadir: /data/mysql
+  database:
+    - jira
+
+nginx:
+  ng:
+    server:
+      config: 
+        worker_processes: 4
+        pid: /run/nginx.pid
+        events:
+          worker_connections: 768
+        http:
+          sendfile: 'on'
+          include:
+            - /etc/nginx/mime.types
+            - /etc/nginx/conf.d/*.conf
+            - /etc/nginx/sites-enabled/*
+
+    servers:
+      managed:
+        jira: 
+          enabled: True
+          overwrite: True 
+          config:
+            - server:
+              - server_name: jira.somedomain.com
+              - index:
+                - index.html
+                - index.htm
+              - "location /":
+                - proxy_set_header:
+                  - X-Forwarded-Host            
+                  - $host
+                - proxy_set_header:   
+                  - X-Forwarded-Server       
+                  - $remote_addr
+                - proxy_set_header:   
+                  - X-Forwarded-for 
+                  - $proxy_add_x_forwarded_for
+                - proxy_pass:
+                   - http://localhost:8080
+                - client_max_body_size:
+                   - 10M
