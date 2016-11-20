@@ -75,7 +75,7 @@ List of databses need to be created (need to have database from #jira:db_name)
 
 ## Nginx
 
-Example pillar below, for explanation of this settings look here:  https://github.com/saltstack-formulas/nginx-formula
+Example pillar below, for settings explanation look here:  https://github.com/saltstack-formulas/nginx-formula
 
 Most important option is nginx:servers:managed:jira:server_name
 as it's defining what will be server name for jira
