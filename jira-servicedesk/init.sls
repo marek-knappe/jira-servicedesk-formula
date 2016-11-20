@@ -103,8 +103,9 @@ fix-jira-filesystem-permissions:
     - watch:
       - archive: unpack-jira-tarball
 
-/usr/lib/systemd/system:
+systemd-system-dir:
   file.directory:
+    - name: /usr/lib/systemd/system
     - user: root
     - group: root
     - mode: 755
@@ -117,6 +118,8 @@ jira-init-script:
     - user: root
     - group: root
     - mode: 0755
+    - require:
+      - file: systemd-system-dir
     - template: jinja
     - context:
       jira: {{ jira|json }}
