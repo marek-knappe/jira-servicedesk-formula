@@ -165,13 +165,13 @@ jira-https-replace:
   file.replace:
     - name: {{ jira.prefix }}/jira/conf/server.xml
     - pattern:  '\<Connector port=\"8080\"[^\n]*'
-    - repl: '<Connector port="8080" scheme="https"'
+    - repl: '<Connector port="8080" proxyName="{{ jira.jira_hostname }}" proxyPort="443" scheme="https" secure="true"'
 {% else %}
 jira-https-replace:
   file.replace:
     - name: {{ jira.prefix }}/jira/conf/server.xml
     - pattern:  '\<Connector port="8080"[^\n]+'
-    - repl: '<Connector port="8080" '
+    - repl: '<Connector port="8080" proxyName="{{ jira.jira_hostname }}" proxyPort="80"'
 {% endif %}
 
 jira-restart:
