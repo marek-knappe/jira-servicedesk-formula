@@ -1,29 +1,41 @@
 jira:
 
   version: 3.2.1
+
+  
   db_type: 'mysql'
   db_type_name: 'mysql'
   db_driver: 'com.mysql.jdbc.Driver'
   db_server: 'localhost'
   db_port: '3306'
-  db_username: 'root'
-  db_password: 'some-password'
+  db_username: 'jira'
+  db_password: 'somepassjira'
+  db_name: 'jira'
+
+  db_datadir: '/data/mysql'
+  use_https: true
+
 
   prefix: '/data'
   jira_home: '/data/jira-home'
-  jira_hostname: 'jira.somedomain.com'
+  jira_hostname: 'somedomain.com'
   jvm_Xms: 1024m
   jvm_Xmx: 1024m
-  use_ssl: false
-  
+
 mysql: 
   server:
     root_user: 'root'
-    root_password: 'some-password'
+    root_password: 'somepassroot'
     datadir: /data/mysql
   database:
     - jira
-
+  user:
+    jira:
+      password: 'somepassjira'
+      host: localhost
+      databases:
+        - database: jira
+          grants: ['all privileges']
 nginx:
   ng:
     server:
@@ -46,10 +58,17 @@ nginx:
           overwrite: True 
           config:
             - server:
-              - server_name: jira.somedomain.com
-              - index:
-                - index.html
-                - index.htm
+              - server_name: 'somedomain.com'
+              - return:
+                - 301 
+                - https://$server_name$request_uri
+            - server:
+              - listen:
+                - 443
+                - ssl
+              - server_name: 'somedomain.com'
+              - ssl_certificate: '/etc/nginx/ssl/somedomain.com.crt'
+              - ssl_certificate_key: '/etc/nginx/ssl/somedomain.com.key'
               - "location /":
                 - proxy_set_header:
                   - X-Forwarded-Host            
@@ -63,4 +82,14 @@ nginx:
                 - proxy_pass:
                    - http://localhost:8080
                 - client_max_body_size:
-                   - 10M
+                   - 10M         
+    certificates:
+      'somedomain.com':
+        public_cert: |
+          -----BEGIN CERTIFICATE-----
+          Your chain here
+          -----END CERTIFICATE-----
+        private_key: |
+          -----BEGIN PRIVATE KEY-----
+		  Your private key here 
+          -----END PRIVATE KEY-----

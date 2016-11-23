@@ -29,6 +29,9 @@
 {%- set default_db_type_name      = 'postgresql' %}
 {%- set default_jira_hostname	  = 'localhost' %}
 
+{%- set default_use_https   = false %}
+
+
 
 {%- set version        = g.get('version', p.get('version', default_version)) %}
 {%- set prefix         = g.get('prefix', p.get('prefix', default_prefix)) %}
@@ -53,6 +56,7 @@
 {%- set db_type_name      = g.get('db_type_name', p.get('db_type_name', default_db_type_name)) %}
 {%- set jira_hostname     = g.get('jira_hostname', p.get('jira_hostname', default_jira_hostname)) %}
 
+{%- set use_https     = g.get('use_https', p.get('use_https', default_use_https)) %}
 
 
 
@@ -85,6 +89,7 @@
                       'db_type'        : db_type,
                       'db_type_name'   : db_type_name,
                       'jira_hostname'  : jira_hostname,
+                      'use_https'      : use_https,
                       'mysql_location' : mysql_location,
                       'mysql_connector_version': mysql_connector_version
                   }) %}

@@ -160,6 +160,19 @@ jira-service:
       - /usr/lib/systemd/system/jira.service
       - {{ jira.prefix }}/jira/atlassian-jira/WEB-INF/classes/jira-application.properties
 
+{% if jira.use_https == True %}
+jira-https-replace:
+  file.replace:
+    - name: {{ jira.prefix }}/jira/conf/server.xml
+    - pattern:  '\<Connector port=\"8080\"[^\n]*'
+    - repl: '<Connector port="8080" scheme="https"'
+{% else %}
+jira-https-replace:
+  file.replace:
+    - name: {{ jira.prefix }}/jira/conf/server.xml
+    - pattern:  '\<Connector port="8080"[^\n]+'
+    - repl: '<Connector port="8080" '
+{% endif %}
 
 jira-restart:
   module.wait:
