@@ -31,7 +31,6 @@ unpack-jira-tarball:
     {% elif jira.app_name == 'jira' %}
     - if_missing: {{ jira.prefix }}/atlassian-jira-{{ jira.version }}-standalone
     {% endif %}
-    
     - keep: True
     - require:
       - module: jira-stop
@@ -71,7 +70,7 @@ unpack-mysql-tarball:
     - if_missing: {{ jira.prefix }}/jira/lib/mysql-connector-java-{{ jira.mysql_connector_version }}-bin.jar
     - keep: True
 
-{% if not salt['file.directory_exists' ]('{{ jira.prefix }}/jira/lib/mysql-connector-java-{{ jira.mysql_connector_version }}-bin.jar') %}
+
 mysql-jar-copy:
   file.copy:
     - name: {{ jira.prefix }}/jira/lib/mysql-connector-java-{{ jira.mysql_connector_version }}-bin.jar
@@ -82,8 +81,8 @@ mysql-jar-copy:
       - file: jira-init-script
     - listen_in:
       - module: jira-restart   
-{% endif %}
-
+    - onchanges_in:
+      - module: unpack-mysql-tarball
 
 fix-jira-filesystem-permissions:
   file.directory:
