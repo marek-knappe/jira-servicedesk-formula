@@ -173,6 +173,23 @@ jira-https-replace:
     - repl: '<Connector port="8080" proxyName="{{ jira.jira_hostname }}" proxyPort="80"'
 {% endif %}
 
+jvm-min-memory:
+  file.replace:
+    - name: {{ jira.prefix }}/jira/bin/setenv.sh
+    - pattern:  'JVM_MINIMUM_MEMORY="[^"]*"'
+    - repl: 'JVM_MINIMUM_MEMORY="{{ jira.jvm_Xms }}"'
+    - watch: 
+      - /usr/lib/systemd/system/jira.service
+
+      
+jvm-max-memory:
+  file.replace:
+    - name: {{ jira.prefix }}/jira/bin/setenv.sh
+    - pattern:  'JVM_MAXIMUM_MEMORY="[^"]*"'
+    - repl: 'JVM_MAXIMUM_MEMORY="{{ jira.jvm_Xmx }}"'
+    - watch: 
+      - /usr/lib/systemd/system/jira.service    
+
 jira-restart:
   module.wait:
     - name: service.restart
