@@ -178,16 +178,16 @@ jvm-min-memory:
     - name: {{ jira.prefix }}/jira/bin/setenv.sh
     - pattern:  'JVM_MINIMUM_MEMORY="[^"]*"'
     - repl: 'JVM_MINIMUM_MEMORY="{{ jira.jvm_Xms }}"'
-    - listen_in:
-      - module: jira-restart
-      
+#    - listen_in:
+#      - module: jira-restart
+
 jvm-max-memory:
   file.replace:
     - name: {{ jira.prefix }}/jira/bin/setenv.sh
     - pattern:  'JVM_MAXIMUM_MEMORY="[^"]*"'
     - repl: 'JVM_MAXIMUM_MEMORY="{{ jira.jvm_Xmx }}"'
-    - listen_in:
-      - module: jira-restart
+#    - listen_in:
+#      - module: jira-restart
 
 jira-restart:
   module.wait:
