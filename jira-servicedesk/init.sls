@@ -70,7 +70,6 @@ unpack-mysql-tarball:
     - if_missing: {{ jira.prefix }}/jira/lib/mysql-connector-java-{{ jira.mysql_connector_version }}-bin.jar
     - keep: True
 
-
 mysql-jar-copy:
   file.copy:
     - name: {{ jira.prefix }}/jira/lib/mysql-connector-java-{{ jira.mysql_connector_version }}-bin.jar
@@ -80,9 +79,9 @@ mysql-jar-copy:
       - module: jira-stop
       - file: jira-init-script
     - listen_in:
-      - module: jira-restart   
-    - onchanges_in:
-      - module: unpack-mysql-tarball
+      - module: jira-restart
+    - unless:
+      - ls {{ jira.prefix }}/jira/lib/mysql-connector-java-{{ jira.mysql_connector_version }}-bin.jar
 
 fix-jira-filesystem-permissions:
   file.directory:
@@ -178,16 +177,16 @@ jvm-min-memory:
     - name: {{ jira.prefix }}/jira/bin/setenv.sh
     - pattern:  'JVM_MINIMUM_MEMORY="[^"]*"'
     - repl: 'JVM_MINIMUM_MEMORY="{{ jira.jvm_Xms }}"'
-#    - listen_in:
-#      - module: jira-restart
+    - listen_in:
+      - module: jira-restart
 
 jvm-max-memory:
   file.replace:
     - name: {{ jira.prefix }}/jira/bin/setenv.sh
     - pattern:  'JVM_MAXIMUM_MEMORY="[^"]*"'
     - repl: 'JVM_MAXIMUM_MEMORY="{{ jira.jvm_Xmx }}"'
-#    - listen_in:
-#      - module: jira-restart
+    - listen_in:
+      - module: jira-restart
 
 jira-restart:
   module.wait:
