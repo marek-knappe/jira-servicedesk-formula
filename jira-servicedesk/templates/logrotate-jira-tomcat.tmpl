@@ -1,0 +1,9 @@
+{{ jira.prefix }}/jira/logs/catalina.out {
+    rotate 5
+    size 50M
+    nocompress
+    notifempty
+    missingok
+    copytruncate
+    su jira jira
+}
