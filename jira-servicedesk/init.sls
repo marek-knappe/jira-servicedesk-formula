@@ -198,9 +198,19 @@ jira-stop:
     - name: service.stop
     - m_name: jira  
 
+logrotate:
+    pkg.installed
 
-
-
-
-
+logrotate-jira-tomcat
+  file.managed:
+    - name: '/etc/logrotate.d/jira-tomcat.conf'
+    - source: salt://jira-servicedesk/templates/logrotate-jira-tomcat.tmpl
+    - user: root
+    - group: root
+    - mode: 0755
+    - require:
+      - pkg: logrotate
+    - template: jinja
+    - context:
+      jira: {{ jira|json }}
 
