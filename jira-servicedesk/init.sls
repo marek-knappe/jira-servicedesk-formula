@@ -7,16 +7,16 @@ include:
   - mysql.remove_test_database
   - nginx.ng
 
-jira: 
+jira:
   group:
     - present
   user.present:
     - fullname: Jira user
     - shell: /bin/sh
-    - home: {{ jira.home }} 
+    - home: {{ jira.home }}
     - groups:
        - jira
-  
+
 ### APPLICATION INSTALL ###
 unpack-jira-tarball:
   archive.extracted:
@@ -24,8 +24,8 @@ unpack-jira-tarball:
     - source: {{ jira.source_url }}/{{ jira.app_name }}-{{ jira.version }}.tar.gz
     - archive_format: tar
     - skip_verify: true
-    - user: jira 
-    - tar_options: z
+    - user: jira
+    - options: z
     {% if jira.app_name == 'atlassian-servicedesk' %}
     - if_missing: {{ jira.prefix }}/atlassian-jira-servicedesk-{{ jira.version }}-standalone
     {% elif jira.app_name == 'jira' %}
@@ -65,8 +65,8 @@ unpack-mysql-tarball:
     - source: {{ jira.mysql_location }}/mysql-connector-java-{{ jira.mysql_connector_version }}.tar.gz
     - skip_verify: true
     - archive_format: tar
-    - user: jira 
-    - tar_options: z
+    - user: jira
+    - options: z
     - if_missing: {{ jira.prefix }}/jira/lib/mysql-connector-java-{{ jira.mysql_connector_version }}-bin.jar
     - keep: True
 
@@ -154,7 +154,7 @@ jira-service:
     - require:
       - archive: unpack-jira-tarball
       - file: jira-init-script
-    - watch: 
+    - watch:
       - /usr/lib/systemd/system/jira.service
       - {{ jira.prefix }}/jira/atlassian-jira/WEB-INF/classes/jira-application.properties
 
@@ -196,7 +196,7 @@ jira-restart:
 jira-stop:
   module.wait:
     - name: service.stop
-    - m_name: jira  
+    - m_name: jira
 
 logrotate:
     pkg.installed
@@ -213,4 +213,3 @@ logrotate-jira-tomcat
     - template: jinja
     - context:
       jira: {{ jira|json }}
-
