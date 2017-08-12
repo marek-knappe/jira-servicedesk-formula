@@ -201,7 +201,7 @@ jira-stop:
 logrotate:
     pkg.installed
 
-logrotate-jira-tomcat
+logrotate-jira-tomcat:
   file.managed:
     - name: '/etc/logrotate.d/jira-tomcat.conf'
     - source: salt://jira-servicedesk/templates/logrotate-jira-tomcat.tmpl
