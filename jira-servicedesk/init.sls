@@ -25,8 +25,7 @@ unpack-jira-tarball:
     - archive_format: tar
     - skip_verify: true
     - user: jira
-    - options: xz
-    - list_options: zcat
+    - options: z
     {% if jira.app_name == 'atlassian-servicedesk' %}
     - if_missing: {{ jira.prefix }}/atlassian-jira-servicedesk-{{ jira.version }}-standalone
     {% elif jira.app_name == 'jira' %}
@@ -67,8 +66,7 @@ unpack-mysql-tarball:
     - skip_verify: true
     - archive_format: tar
     - user: jira
-    - options: xz
-    - list_options: zcat
+    - options: z
     - if_missing: {{ jira.prefix }}/jira/lib/mysql-connector-java-{{ jira.mysql_connector_version }}-bin.jar
     - keep: True
 
