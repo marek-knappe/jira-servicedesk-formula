@@ -207,7 +207,7 @@ logrotate-jira-tomcat:
     - source: salt://jira-servicedesk/templates/logrotate-jira-tomcat.tmpl
     - user: root
     - group: root
-    - mode: 0755
+    - mode: 0644
     - require:
       - pkg: logrotate
     - template: jinja
